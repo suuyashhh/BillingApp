@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 interface Product {
-  englishName: string;
-  marathiName: string;
-  quantity: number;
+  product_id?: number;
+  english_name: string;
+  marathi_name: string;
+  quantity: string;
   price: number;
-  barcode: string;
+  barcodeNo?: number | null;
 }
 
 @Component({
@@ -17,23 +19,35 @@ interface Product {
   templateUrl: './product-entries.component.html',
   styleUrl: './product-entries.component.css'
 })
-export class ProductEntriesComponent {
-  products: Product[] = [
-    { englishName: 'Apple', marathiName: 'सफरचंद', quantity: 15, price: 180, barcode: '890123456789' },
-    { englishName: 'Banana', marathiName: 'केळी', quantity: 30, price: 40, barcode: '890123456790' },
-    { englishName: 'Potato', marathiName: 'बटाटा', quantity: 50, price: 30, barcode: '890123456791' },
-    { englishName: 'Tomato', marathiName: 'टोमॅटो', quantity: 25, price: 60, barcode: '890123456792' }
-  ];
-
+export class ProductEntriesComponent implements OnInit {
+  products: Product[] = [];
   isDrawerOpen = false;
   searchQuery = '';
 
   // Form inputs
+  productId: number | null = null;
   englishName = '';
   marathiName = '';
   quantity: number | null = null;
   price: number | null = null;
   barcode = '';
+
+  constructor(private api: ApiService) {}
+
+  ngOnInit(): void {
+    this.getProducts();
+  }
+
+  getProducts() {
+    this.api.get('ProductEntries/GetAllEntries').subscribe({
+      next: (res: any) => {
+        this.products = res || [];
+      },
+      error: (err) => {
+        console.error('Failed to load products', err);
+      }
+    });
+  }
 
   openDrawer() {
     this.isDrawerOpen = true;
@@ -45,6 +59,7 @@ export class ProductEntriesComponent {
   }
 
   resetForm() {
+    this.productId = null;
     this.englishName = '';
     this.marathiName = '';
     this.quantity = null;
@@ -52,29 +67,74 @@ export class ProductEntriesComponent {
     this.barcode = '';
   }
 
-  saveProduct() {
-    if (!this.englishName) return;
-    this.products.unshift({
-      englishName: this.englishName,
-      marathiName: this.marathiName,
-      quantity: this.quantity || 0,
-      price: this.price || 0,
-      barcode: this.barcode
-    });
-    this.closeDrawer();
+  editProduct(product: Product) {
+    this.productId = product.product_id || null;
+    this.englishName = product.english_name;
+    this.marathiName = product.marathi_name;
+    this.quantity = product.quantity ? parseInt(product.quantity, 10) : null;
+    this.price = product.price;
+    this.barcode = product.barcodeNo ? product.barcodeNo.toString() : '';
+    this.openDrawer();
   }
 
-  deleteProduct(index: number) {
-    this.products.splice(index, 1);
+  saveProduct() {
+    if (!this.englishName) return;
+
+    const productData: Product = {
+      product_id: this.productId || 0,
+      english_name: this.englishName,
+      marathi_name: this.marathiName || '',
+      quantity: this.quantity !== null ? this.quantity.toString() : '0',
+      price: this.price || 0,
+      barcodeNo: this.barcode ? parseInt(this.barcode, 10) : null
+    };
+
+    if (this.productId) {
+      // Update
+      this.api.put('ProductEntries/UpdateProductEntry', productData).subscribe({
+        next: () => {
+          this.getProducts();
+          this.closeDrawer();
+        },
+        error: (err) => {
+          console.error('Failed to update product', err);
+        }
+      });
+    } else {
+      // Save
+      this.api.post('ProductEntries/SaveProductEntry', productData).subscribe({
+        next: () => {
+          this.getProducts();
+          this.closeDrawer();
+        },
+        error: (err) => {
+          console.error('Failed to save product', err);
+        }
+      });
+    }
+  }
+
+  deleteProduct(productId: number | undefined) {
+    if (!productId) return;
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.api.delete('ProductEntries/DeleteProductEntry/' + productId).subscribe({
+        next: () => {
+          this.getProducts();
+        },
+        error: (err) => {
+          console.error('Failed to delete product', err);
+        }
+      });
+    }
   }
 
   filteredProducts() {
     if (!this.searchQuery) return this.products;
-    const query = this.searchQuery.toLowerCase();
+    const query = this.searchQuery.toLowerCase().trim();
     return this.products.filter(p => 
-      p.englishName.toLowerCase().includes(query) ||
-      p.marathiName.includes(query) ||
-      p.barcode.includes(query)
+      (p.english_name?.toLowerCase() || '').includes(query) ||
+      (p.marathi_name?.toLowerCase() || '').includes(query) ||
+      (p.barcodeNo?.toString() || '').includes(query)
     );
   }
 }
