@@ -7,15 +7,19 @@ interface SelectedProduct {
   srNo: number;
   product_id: number;
   name: string;
+  marathi_name?: string;
+  english_name?: string;
+  weight?: string;
   quantity: number;
   price: number;
+  mrp?: number;
 }
 
 interface Product {
   product_id?: number;
   english_name: string;
   marathi_name: string;
-  quantity: string;
+  weight: string;
   price: number;
   barcodeNo?: number | null;
 }
@@ -107,12 +111,20 @@ export class DailyEntryComponent implements OnInit {
     if (existing) {
       existing.quantity += 1;
     } else {
+      const marathi = product.marathi_name || product.english_name || '';
+      const weightVal = product.weight || '';
+      const displayName = `${marathi} ${weightVal}`.trim();
+
       this.selectedProducts.push({
         srNo: this.selectedProducts.length + 1,
         product_id: product.product_id,
-        name: `${product.english_name} ${product.marathi_name ? '(' + product.marathi_name + ')' : ''}`,
+        name: displayName,
+        marathi_name: product.marathi_name,
+        english_name: product.english_name,
+        weight: product.weight,
         quantity: 1,
-        price: product.price || 0
+        price: product.price || 0,
+        mrp: product.price ? Math.round(product.price * 1.15) : 0
       });
     }
 
@@ -155,5 +167,39 @@ export class DailyEntryComponent implements OnInit {
   // Compute grand total
   getGrandTotal(): number {
     return this.selectedProducts.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+  }
+
+
+
+
+
+
+
+
+
+
+  // All for Printer
+  getTotalQty(): number {
+    return this.selectedProducts.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  }
+
+  getTotalSavings(): number {
+    return this.selectedProducts.reduce((sum, item) => {
+      const mrp = item.mrp || (item.price * 1.15);
+      return sum + ((mrp - item.price) * item.quantity);
+    }, 0);
+  }
+
+  getCurrentTime(): string {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  }
+
+  printInvoice() {
+    if (this.selectedProducts.length === 0) {
+      alert('Please add at least one item to the invoice before printing.');
+      return;
+    }
+    window.print();
   }
 }

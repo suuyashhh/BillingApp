@@ -6,6 +6,12 @@
       <h1 class="page-title">Daily Entry</h1>
     </div>
     <div class="header-right">
+      <button class="btn-action-header btn-print" (click)="printInvoice()" title="Print Bill (2 Inch Thermal)">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Bill
+      </button>
       <button class="btn-action-header btn-new" (click)="clearForm()" title="Start New Invoice">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -116,7 +122,15 @@
         <tfoot *ngIf="selectedProducts.length > 0">
           <tr>
             <td colspan="4" class="tfoot-label">Grand Total:</td>
-            <td colspan="2" class="tfoot-total">₹{{ getGrandTotal() }}</td>
+            <td class="tfoot-total">₹{{ getGrandTotal() }}</td>
+            <td class="tfoot-action">
+              <button class="btn-print-table" (click)="printInvoice()" title="Print 2 Inch Thermal Bill">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="15" height="15">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print
+              </button>
+            </td>
           </tr>
         </tfoot>
       </table>
@@ -165,7 +179,7 @@
             <div class="item-details">
               <h4 class="item-name">{{ product.english_name }} <span class="marathi-name" *ngIf="product.marathi_name">- {{ product.marathi_name }}</span></h4>
               <div class="item-meta">
-                <span class="meta-tag">Stock: <strong>{{ product.quantity }}</strong></span>
+                <span class="meta-tag">Weight: <strong>{{ product.weight }}</strong></span>
                 <span class="meta-sep">|</span>
                 <span class="meta-tag">Barcode: <strong>{{ product.barcodeNo || 'N/A' }}</strong></span>
               </div>
@@ -186,5 +200,75 @@
         <p>No products matching "<strong>{{ searchQuery }}</strong>" found in the inventory.</p>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- 2 Inch (58mm) Thermal Receipt Section (Hidden on Screen, Printed on Thermal Printer) -->
+<div id="thermal-receipt-container" class="thermal-receipt-print">
+  <div class="receipt-header">
+    <h2 class="receipt-title">हरिप्रिया बेकर्स</h2>
+    <p class="receipt-subtitle">चिंचवड-मुडशिंगी मुख्य रस्ता, चिंचवड</p>
+    <p class="receipt-contact">मो. नं. ८१८०८२११७३</p>
+    <p class="receipt-gst">GST NO-27ARSJHBC63P1ZZ</p>
+  </div>
+  <div class="receipt-divider"></div>
+  
+  <div class="receipt-meta">
+    <div class="meta-row"><span class="meta-label">BILL NO :</span> <span class="meta-val">{{ invoiceNo }}</span></div>
+    <div class="meta-row"><span class="meta-label">Date :</span> <span class="meta-val">{{ date }} {{ getCurrentTime() }}</span></div>
+  </div>
+  <div class="receipt-divider"></div>
+  
+  <table class="receipt-items-table">
+    <thead>
+      <tr>
+        <th class="col-name">Item Name</th>
+        <th class="col-qty">Qty</th>
+        <th class="col-mrp">MRP</th>
+        <th class="col-rate">Rate</th>
+        <th class="col-amt">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of selectedProducts">
+        <td class="col-name">{{ item.name }}</td>
+        <td class="col-qty">{{ item.quantity | number:'1.0-2' }}</td>
+        <td class="col-mrp">{{ (item.mrp || item.price * 1.15) | number:'1.0-0' }}</td>
+        <td class="col-rate">{{ item.price | number:'1.0-0' }}</td>
+        <td class="col-amt">{{ (item.quantity * item.price) | number:'1.0-0' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="receipt-divider"></div>
+  
+  <div class="receipt-summary-row">
+    <span>Items & Total Qty :</span>
+    <span class="summary-val">{{ selectedProducts.length }} / {{ getTotalQty() | number:'1.0-2' }} &nbsp;&nbsp;&nbsp;&nbsp; {{ getGrandTotal() | number:'1.0-0' }}</span>
+  </div>
+  <div class="receipt-divider"></div>
+  
+  <div class="receipt-net-amt">
+    <span>Net Amt</span>
+    <span class="net-val">{{ getGrandTotal() | number:'1.0-0' }}</span>
+  </div>
+  <div class="receipt-divider"></div>
+  
+  <div class="receipt-cashier">
+    <span>sarika</span>
+  </div>
+  <div class="receipt-savings">
+    <span>एकून बचत रु {{ getTotalSavings() | number:'1.0-0' }}</span>
+  </div>
+  <div class="receipt-received">
+    <span>Recieved</span>
+    <span class="received-val">0</span>
+  </div>
+  <div class="receipt-divider"></div>
+  
+  <div class="receipt-footer-terms">
+    <p>कृपया आपला माल दिल्या बिलानुसार तपासून घ्या.</p>
+    <p>एकदा विकलेला माल परत घेतला जाणार नाही.</p>
+    <p>सर्व प्रकारच्या साहित्याचे होलसेल दरात विक्री.</p>
+    <p class="incl-taxes">Incl.of all taxes</p>
   </div>
 </div>

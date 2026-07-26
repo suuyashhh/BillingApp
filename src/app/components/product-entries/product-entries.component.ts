@@ -7,7 +7,7 @@ interface Product {
   product_id?: number;
   english_name: string;
   marathi_name: string;
-  quantity: string;
+  weight: string;
   price: number;
   barcodeNo?: number | null;
 }
@@ -28,7 +28,7 @@ export class ProductEntriesComponent implements OnInit {
   productId: number | null = null;
   englishName = '';
   marathiName = '';
-  quantity: number | null = null;
+  weight: string = '';
   price: number | null = null;
   barcode = '';
 
@@ -62,7 +62,7 @@ export class ProductEntriesComponent implements OnInit {
     this.productId = null;
     this.englishName = '';
     this.marathiName = '';
-    this.quantity = null;
+    this.weight = '';
     this.price = null;
     this.barcode = '';
   }
@@ -71,7 +71,7 @@ export class ProductEntriesComponent implements OnInit {
     this.productId = product.product_id || null;
     this.englishName = product.english_name;
     this.marathiName = product.marathi_name;
-    this.quantity = product.quantity ? parseInt(product.quantity, 10) : null;
+    this.weight = product.weight || '';
     this.price = product.price;
     this.barcode = product.barcodeNo ? product.barcodeNo.toString() : '';
     this.openDrawer();
@@ -84,7 +84,7 @@ export class ProductEntriesComponent implements OnInit {
       product_id: this.productId || 0,
       english_name: this.englishName,
       marathi_name: this.marathiName || '',
-      quantity: this.quantity !== null ? this.quantity.toString() : '0',
+      weight: this.weight || '',
       price: this.price || 0,
       barcodeNo: this.barcode ? parseInt(this.barcode, 10) : null
     };

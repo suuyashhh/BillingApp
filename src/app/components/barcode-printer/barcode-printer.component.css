@@ -1,0 +1,686 @@
+/* Barcode Sticker Printer Page Layout */
+.printer-page {
+  font-family: var(--font-sans);
+  color: var(--color-text-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.master-badge {
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0;
+  color: #0f172a;
+}
+
+.btn-print-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.25);
+  transition: all var(--transition-fast);
+}
+
+.btn-print-action:hover {
+  background-color: #0369a1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px -1px rgba(2, 132, 199, 0.35);
+}
+
+.btn-print-action:active {
+  transform: translateY(0);
+}
+
+/* Main Grid Layout */
+.printer-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1.3fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Card Common Styles */
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.items-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  background-color: #f1f5f9;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.preview-hint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0284c7;
+  background-color: #e0f2fe;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+}
+
+/* Search Box */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 2.75rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: #0f172a;
+  background-color: #f8fafc;
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.1);
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 0.85rem;
+  background: none;
+  border: none;
+  font-size: 1.35rem;
+  color: #94a3b8;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Product List / Table */
+.products-list-container {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background-color: #f8fafc;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  divide-y: 1px solid var(--border-color);
+}
+
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.product-item:hover {
+  background-color: #f0fdf4;
+}
+
+.product-item.selected {
+  background-color: #dcefdc;
+  border-left: 4px solid var(--color-primary);
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #e8f5e9;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.item-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.marathi-name {
+  font-weight: 600;
+  color: #475569;
+}
+
+.item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.meta-sep {
+  color: #cbd5e1;
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.item-price {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.btn-select {
+  padding: 0.35rem 0.75rem;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.product-item.selected .btn-select {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+/* Card 2: Preview Container */
+.preview-card {
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border-left: 4px solid #0284c7;
+}
+
+.preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #e2e8f0;
+  border-radius: var(--border-radius-md);
+  border: 2px dashed #94a3b8;
+}
+
+/* Sticker Styling (Both Preview and Print) */
+.sticker-box, .print-sticker-box {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.print-sticker-box {
+  width: 50mm !important;
+  height: 50mm !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 1.5mm 2mm !important;
+}
+
+/* Header Row */
+.sticker-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.repacked-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.repacked-lbl {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.2px;
+}
+
+.repacked-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: #000;
+  line-height: 1.15;
+}
+
+.print-sticker-box .repacked-lbl { font-size: 7px !important; }
+.print-sticker-box .repacked-val { font-size: 11.5px !important; }
+
+/* Green Dot Veg Symbol (SVG based for bulletproof printing) */
+.veg-symbol-wrapper {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.veg-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.print-sticker-box .veg-symbol-wrapper { width: 13px !important; height: 13px !important; }
+
+/* Barcode Row */
+.sticker-barcode-row {
+  display: flex;
+  flex-direction: column;
+  width: 86%;
+  margin-top: 2px;
+}
+
+.barcode-svg-wrapper {
+  width: 100%;
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.print-sticker-box .barcode-svg-wrapper { height: 24px !important; }
+
+.barcode-text-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: baseline;
+  margin-top: 1px;
+}
+
+.barcode-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.pkd-date {
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.print-sticker-box .barcode-num { font-size: 8.5px !important; }
+.print-sticker-box .pkd-date { font-size: 8px !important; }
+
+/* Product Name Row */
+.sticker-product-row {
+  width: 88%;
+  margin-top: 2px;
+}
+
+.sticker-prod-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #000;
+  line-height: 1.15;
+  display: block;
+}
+
+.print-sticker-box .sticker-prod-name { font-size: 11.5px !important; }
+
+/* MRP Row */
+.sticker-mrp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 86%;
+  margin-top: 2px;
+}
+
+.mrp-left {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.mrp-title {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mrp-taxes {
+  font-size: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.mrp-right {
+  text-align: right;
+}
+
+.mrp-val {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 0.9;
+}
+
+.print-sticker-box .mrp-title { font-size: 10px !important; }
+.print-sticker-box .mrp-taxes { font-size: 6.5px !important; }
+.print-sticker-box .mrp-val { font-size: 18px !important; }
+
+/* Contact Row */
+.sticker-contact-row {
+  width: 86%;
+  margin-top: 1px;
+}
+
+.contact-txt {
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.print-sticker-box .contact-txt { font-size: 8px !important; }
+
+/* Best Before Row */
+.sticker-best-row {
+  width: 86%;
+  margin-top: 1px;
+}
+
+.best-txt {
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.print-sticker-box .best-txt { font-size: 8.5px !important; }
+
+/* Vertical FSSAI Text on Right Edge */
+.sticker-fssai-vert {
+  position: absolute;
+  right: 4px;
+  top: 14px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #111;
+}
+
+.print-sticker-box .sticker-fssai-vert {
+  right: 1.5mm !important;
+  top: 4mm !important;
+  font-size: 6.5pt !important;
+}
+
+/* Card 3: Customization Form */
+.custom-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.form-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.05em;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(27, 67, 50, 0.1);
+}
+
+.checkbox-group {
+  margin-top: 0.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #16a34a;
+  cursor: pointer;
+}
+
+.form-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #16a34a;
+  cursor: pointer;
+}
+
+.card-actions-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-print-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+  transition: all var(--transition-fast);
+}
+
+.btn-print-large:hover {
+  background-color: #0369a1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4);
+}
+
+.btn-print-large:active {
+  transform: translateY(0);
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 1024px) {
+  .printer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .custom-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .col-span-2 {
+    grid-column: span 1;
+  }
+}
+
+/* 50mm x 50mm Thermal Sticker Print Media Queries */
+.sticker-print-only {
+  display: none !important;
+}
+
+@media print {
+  @page {
+    size: 50mm 50mm;
+    margin: 0;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  :host ~ *, .no-print, .page-header, .printer-grid {
+    display: none !important;
+  }
+
+  .sticker-print-only, #sticker-print-container, .print-sticker-box {
+    visibility: visible !important;
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 50mm !important;
+    height: 50mm !important;
+    max-width: 50mm !important;
+    max-height: 50mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    z-index: 999999 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .print-sticker-box * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+}

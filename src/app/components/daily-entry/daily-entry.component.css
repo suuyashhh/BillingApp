@@ -547,3 +547,74 @@
     justify-content: space-between;
   }
 }
+
+/* Print Buttons Styling */
+.btn-print {
+  background-color: #0284c7;
+  color: #ffffff;
+}
+
+.btn-print:hover {
+  background-color: #0369a1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.2);
+}
+
+.tfoot-action {
+  text-align: center;
+  padding: 0.75rem 1rem !important;
+}
+
+.btn-print-table {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #0284c7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-print-table:hover {
+  background-color: #0369a1;
+  transform: translateY(-1px);
+}
+
+/* 2 Inch (58mm) Thermal Receipt Styling */
+/* Hidden on normal screen view */
+.thermal-receipt-print {
+  display: none !important;
+}
+
+@media print {
+  /* Hide standard page elements */
+  :host ~ *, .page-header, .header-form-card, .table-section-card, .search-add-section {
+    display: none !important;
+  }
+  
+  /* Show thermal receipt */
+  .thermal-receipt-print, #thermal-receipt-container {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 58mm !important;
+    max-width: 58mm !important;
+    margin: 0 !important;
+    padding: 1mm 2mm !important;
+    background-color: #fff !important;
+    color: #000 !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    box-sizing: border-box !important;
+    z-index: 999999 !important;
+  }
+}
