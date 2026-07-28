@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
@@ -48,7 +48,57 @@ export class DailyEntryComponent implements OnInit {
   // Selected products in the table
   selectedProducts: SelectedProduct[] = [];
 
+  // Barcode Scanner Tracking
+  barcodeBuffer: string = '';
+  lastKeystrokeTime: number = 0;
+
   constructor(private api: ApiService) {}
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    // Ignore keydown if the user is typing in certain specific input fields where we DON'T want scanner interference
+    // But usually we just let it capture and clear the buffer if it's too slow (human typing)
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - this.lastKeystrokeTime;
+
+    // Human typing is usually > 50-100ms. Barcode scanners are usually < 30ms per character.
+    if (timeDiff > 100) {
+      this.barcodeBuffer = '';
+    }
+
+    if (event.key === 'Enter' && this.barcodeBuffer.length > 3) {
+      // Barcode scanned successfully
+      this.processBarcode(this.barcodeBuffer);
+      this.barcodeBuffer = '';
+      event.preventDefault();
+      return;
+    }
+
+    // Capture standard printable characters
+    if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      this.barcodeBuffer += event.key;
+    }
+
+    this.lastKeystrokeTime = currentTime;
+  }
+
+  processBarcode(barcode: string) {
+    const matchedProduct = this.allProducts.find(p => p.barcodeNo?.toString() === barcode);
+    if (matchedProduct) {
+      this.addProductToTable(matchedProduct);
+
+      // If the user's cursor was in an input field, the barcode scanner would have typed the characters there.
+      // We can optionally clear it if we know they might have been in the search box.
+      if (document.activeElement?.tagName === 'INPUT') {
+        const input = document.activeElement as HTMLInputElement;
+        // If it's the search box, clear it because the product was successfully added
+        if (input.placeholder?.toLowerCase().includes('search')) {
+          this.searchQuery = '';
+          this.onSearchInput(); // refresh the list
+        }
+      }
+    }
+  }
 
   ngOnInit(): void {
     // Default date to today (yyyy-MM-dd format for HTML date input)
