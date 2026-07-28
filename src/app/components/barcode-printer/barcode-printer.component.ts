@@ -28,7 +28,7 @@ export class BarcodePrinterComponent implements OnInit {
 
   // Editable Sticker Fields (Defaults match user image sample)
   repackedByLabel: string = 'Repacked By :-';
-  repackedByName: string = 'हरिप्रिया बेकर्स';
+  repackedByName: string = 'तेजस नाश्ता केंद्र';
   isVeg: boolean = true;
   barcodeNo: string = '345';
   pkdDate: string = '';

@@ -67,6 +67,23 @@ export class ProductEntriesComponent implements OnInit {
     this.barcode = '';
   }
 
+  generateUniqueBarcode() {
+    let newBarcode = '';
+    let isUnique = false;
+    
+    while (!isUnique) {
+      const randomPart = Math.floor(100000000 + Math.random() * 900000000).toString(); // 9 digits
+      newBarcode = '890' + randomPart;
+      
+      const exists = this.products.some(p => p.barcodeNo?.toString() === newBarcode);
+      if (!exists) {
+        isUnique = true;
+      }
+    }
+    
+    this.barcode = newBarcode;
+  }
+
   editProduct(product: Product) {
     this.productId = product.product_id || null;
     this.englishName = product.english_name;

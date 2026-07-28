@@ -347,6 +347,34 @@
   box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.1);
 }
 
+.input-with-button {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-with-button .form-input {
+  flex-grow: 1;
+}
+
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  background-color: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: #64748b;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-refresh:hover {
+  background-color: #f1f5f9;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
 /* Drawer Footer */
 .drawer-footer {
   padding: 1.25rem 1.5rem;
